@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savings Tracker - Manage Your Money Wisely</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">💰</span>
+                    <h1>Savings Tracker</h1>
+                </div>
+                <p class="tagline">Your Smart Money Management Dashboard</p>
+            </div>
+            <!-- Currency: Fixed to INR -->
+            <div class="currency-selector">
+                <label>Currency:</label>
+                <div style="font-weight:700; margin-left:8px;">₹ INR</div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="dashboard">
+                <span class="icon">📊</span> Dashboard
+            </button>
+            <button class="tab-btn" data-tab="add-savings">
+                <span class="icon">➕</span> Add Savings
+            </button>
+            <button class="tab-btn" data-tab="transactions">
+                <span class="icon">📋</span> Transactions
+            </button>
+            <button class="tab-btn" data-tab="analytics">
+                <span class="icon">📈</span> Analytics
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Tab -->
+            <section id="dashboard" class="tab-content active">
+                <div class="dashboard-grid">
+                    <!-- Total Savings Card -->
+                    <div class="stat-card primary-card">
+                        <div class="stat-header">
+                            <h3>Total Savings</h3>
+                            <span class="stat-icon">🏆</span>
+                        </div>
+                        <div class="stat-value" id="totalSavings">$0.00</div>
+                        <p class="stat-subtitle">Your accumulated wealth</p>
+                    </div>
+
+                    <!-- Monthly Savings Card -->
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <h3>This Month</h3>
+                            <span class="stat-icon">📅</span>
+                        </div>
+                        <div class="stat-value" id="monthlySavings">$0.00</div>
+                        <p class="stat-subtitle">Saved this month</p>
+                    </div>
+
+                    <!-- Last Transaction Card -->
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <h3>Last Added</h3>
+                            <span class="stat-icon">⏱️</span>
+                        </div>
+                        <div class="stat-value" id="lastTransaction">-</div>
+                        <p class="stat-subtitle">Most recent deposit</p>
+                    </div>
+
+                    <!-- Goal Progress Card -->
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <h3>Total Deposits</h3>
+                            <span class="stat-icon">📍</span>
+                        </div>
+                        <div class="stat-value" id="totalDeposits">0</div>
+                        <p class="stat-subtitle">Number of transactions</p>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="quick-stats">
+                    <div class="quick-stat-item">
+                        <span class="quick-label">Average Deposit</span>
+                        <span class="quick-value" id="avgDeposit">$0.00</span>
+                    </div>
+                    <div class="quick-stat-item">
+                        <span class="quick-label">Highest Deposit</span>
+                        <span class="quick-value" id="maxDeposit">$0.00</span>
+                    </div>
+                    <div class="quick-stat-item">
+                        <span class="quick-label">Lowest Deposit</span>
+                        <span class="quick-value" id="minDeposit">$0.00</span>
+                    </div>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="recent-section">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                        <h2>Recent Transactions</h2>
+                        <button id="clearHistoryBtn" class="btn btn-danger" style="padding:8px 12px; font-size:0.9em;">🗑️ Clear History</button>
+                    </div>
+                    <div class="recent-transactions" id="recentTransactions">
+                        <p class="empty-state">No transactions yet. Start by adding your first savings! 🚀</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Add Savings Tab -->
+            <section id="add-savings" class="tab-content">
+                <div class="form-container">
+                    <h2>Add Your Savings</h2>
+                    <p class="form-subtitle">Track every step of your financial journey</p>
+                    
+                    <form id="savingsForm" class="savings-form">
+                        <!-- Amount Input -->
+                        <div class="form-group">
+                            <label for="amount" class="form-label">
+                                Amount <span class="required">*</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <span class="currency-symbol" id="formCurrencySymbol">$</span>
+                                <input 
+                                    type="number" 
+                                    id="amount" 
+                                    name="amount" 
+                                    placeholder="0.00" 
+                                    step="0.01" 
+                                    min="0" 
+                                    required
+                                    class="form-input"
+                                >
+                            </div>
+                            <p class="form-hint">Enter the amount you're saving</p>
+                        </div>
+
+                        <!-- Category Input -->
+                        <div class="form-group">
+                            <label for="category" class="form-label">
+                                Category <span class="required">*</span>
+                            </label>
+                            <select id="category" name="category" required class="form-input">
+                                <option value="">Select a category</option>
+                                <option value="emergency">Emergency Fund</option>
+                                <option value="vacation">Vacation</option>
+                                <option value="education">Education</option>
+                                <option value="investment">Investment</option>
+                                <option value="home">Home</option>
+                                <option value="retirement">Retirement</option>
+                                <option value="car">Car</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <!-- Date Input -->
+                        <div class="form-group">
+                            <label for="date" class="form-label">
+                                Date <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="date" 
+                                id="date" 
+                                name="date" 
+                                required
+                                class="form-input"
+                            >
+                            <p class="form-hint">When did you save this amount?</p>
+                        </div>
+
+                        <!-- Description Input -->
+                        <div class="form-group">
+                            <label for="description" class="form-label">
+                                Description
+                            </label>
+                            <textarea 
+                                id="description" 
+                                name="description" 
+                                placeholder="Add notes about this savings (optional)"
+                                rows="3"
+                                class="form-input"
+                            ></textarea>
+                        </div>
+
+                        <!-- Source Input -->
+                        <div class="form-group">
+                            <label for="source" class="form-label">
+                                Source <span class="required">*</span>
+                            </label>
+                            <select id="source" name="source" required class="form-input">
+                                <option value="">Select source</option>
+                                <option value="salary">Salary</option>
+                                <option value="bonus">Bonus</option>
+                                <option value="freelance">Freelance Work</option>
+                                <option value="investment">Investment Returns</option>
+                                <option value="gift">Gift</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <span class="btn-icon">💾</span> Add Savings
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Transactions Tab -->
+            <section id="transactions" class="tab-content">
+                <div class="transactions-container">
+                    <div class="transactions-header">
+                        <h2>All Transactions</h2>
+                        <div class="transactions-controls">
+                            <input 
+                                type="text" 
+                                id="searchInput" 
+                                placeholder="Search transactions..." 
+                                class="search-input"
+                            >
+                            <select id="filterCategory" class="filter-select">
+                                <option value="">All Categories</option>
+                                <option value="emergency">Emergency Fund</option>
+                                <option value="vacation">Vacation</option>
+                                <option value="education">Education</option>
+                                <option value="investment">Investment</option>
+                                <option value="home">Home</option>
+                                <option value="retirement">Retirement</option>
+                                <option value="car">Car</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="transactions-list" id="transactionsList">
+                        <p class="empty-state">No transactions to display. Create your first one! 📝</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Tab -->
+            <section id="analytics" class="tab-content">
+                <div class="analytics-container">
+                    <h2>Analytics & Insights</h2>
+                    
+                    <!-- Category Breakdown -->
+                    <div class="analytics-section">
+                        <h3>Savings by Category</h3>
+                        <div class="category-breakdown" id="categoryBreakdown">
+                            <p class="empty-state">No data available yet</p>
+                        </div>
+                    </div>
+
+                    <!-- Source Breakdown -->
+                    <div class="analytics-section">
+                        <h3>Savings by Source</h3>
+                        <div class="source-breakdown" id="sourceBreakdown">
+                            <p class="empty-state">No data available yet</p>
+                        </div>
+                    </div>
+
+                    <!-- Monthly Trend -->
+                    <div class="analytics-section">
+                        <h3>Monthly Savings Trend</h3>
+                        <div class="monthly-trend" id="monthlyTrend">
+                            <p class="empty-state">No data available yet</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="success-message">
+            <span class="success-icon">✓</span>
+            <span class="success-text">Savings added successfully!</span>
+        </div>
+
+        <!-- Password Modal Popup -->
+        <div id="passwordModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>🔐 Enter Password</h3>
+                    <button class="modal-close" id="modalCloseBtn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Enter password to clear all history:</p>
+                    <input type="password" id="passwordInput" class="modal-input" placeholder="Password" />
+                    <div id="passwordError" class="modal-error" aria-live="polite" style="display:none"></div>
+                </div>
+                <div class="modal-footer">
+                    <button id="modalCancelBtn" class="btn btn-secondary">Cancel</button>
+                    <button id="modalSubmitBtn" class="btn btn-danger">Clear History</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmation Modal Popup -->
+        <div id="confirmModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>⚠️ Confirm Action</h3>
+                    <button class="modal-close" id="confirmCloseBtn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmMessage">Are you sure?</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="confirmCancelBtn" class="btn btn-secondary">Cancel</button>
+                    <button id="confirmOkBtn" class="btn btn-danger">Yes, Delete All</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
